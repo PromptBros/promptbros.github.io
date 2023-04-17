@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <title>Prompt Desk</title>
+
+</head>
+
+<body class="bg-gradient-to-br from-pink-500 via-purple-500 to-cyan-500 min-h-screen">
+  <div class="bg-[url('../assets/img/bg02.png')] w-full bg-no-repeat bg-contain bg-center bg-top">
+    <nav class="bg-gray-800">
+      <div class="mx-auto max-w-full px-2 sm:px-6 lg:px-8">
+        <div class="relative flex h-16 items-center justify-between">
+          <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
+            <!-- Mobile menu button-->
+            <button type="button"
+              class="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+              aria-controls="mobile-menu" aria-expanded="false">
+              <span class="sr-only">Open main menu</span>
+              <!--
+              Icon when menu is closed.
+  
+              Menu open: "hidden", Menu closed: "block"
+            -->
+              <svg class="block h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+              </svg>
+              <!--
+              Icon when menu is open.
+  
+              Menu open: "block", Menu closed: "hidden"
+            -->
+              <svg class="hidden h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+          <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
+            <div class="flex flex-shrink-0 items-center">
+              <img class="block h-8 w-auto lg:hidden" src="../assets/img/promptbros_signature_c_white.svg" alt="PromtBros">
+              <img class="hidden h-8 w-auto lg:block" src="../assets/img/promptbros_signature_c_white.svg" alt="PromtBros">
+            </div>
+            <div class="hidden sm:ml-6 sm:block">
+              <div class="flex space-x-4">
+                <a href="#"
+                  class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Collections</a>
+
+                <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
+                <a href="#" class="bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium"
+                  aria-current="page">Prompt Desk</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mobile menu, show/hide based on menu state. -->
+      <div class="sm:hidden" id="mobile-menu">
+        <div class="space-y-1 px-2 pb-3 pt-2">
+          <a href="#"
+            class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Team</a>
+
+          <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
+          <a href="#" class="bg-gray-900 text-white block rounded-md px-3 py-2 text-base font-medium"
+            aria-current="page">Prompt Desk</a>
+        </div>
+      </div>
+    </nav>
+
+
+    <div class="container mx-auto px-4 py-16">
+      <div class="p-12">
+        <h1 class="text-white text-2xl font-bold mb-6">Prompt Desk</h1>
+        <label for="url-input" class="block text-sm text-white font-semibold mb-2">Please, enter your access
+          code:</label>
+        <input type="url" id="url-input" class="w-full p-2 border mb-6" placeholder="Enter your Prompt access code here"
+          value="">
+      </div>
+      <div class="bg-white p-12 rounded-lg shadow-md">
+        <div id="file-list" class="space-y-6"></div>
+      </div>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="../assets/js/pdp.js"></script>
+
+  <style>
+    .markdown {
+      font-size: 1rem;
+      padding: 1%;
+    }
+
+    .markdown h1,
+    .markdown h2,
+    .markdown h3,
+    .markdown h4,
+    .markdown h5,
+    .markdown h6 {
+      font-family: 'Poppins', sans-serif;
+      margin-top: 1rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .markdown h1 {
+      font-size: 1.6rem;
+    }
+
+    .markdown h2 {
+      font-size: 1.4rem;
+    }
+
+    .markdown h3 {
+      font-size: 1.2rem;
+    }
+
+    .markdown h4 {
+      font-size: 1.1rem;
+    }
+
+    .markdown h5 {
+      font-size: 0.9rem;
+    }
+
+    .markdown h6 {
+      font-size: 0.7875rem;
+    }
+
+    .markdown p {
+      margin-bottom: 1rem;
+      line-height: 1.5;
+    }
+
+    .markdown ul {
+      margin-bottom: 1rem;
+      padding-left: 1.25rem;
+      list-style-type: disc;
+    }
+
+    .markdown ol {
+      margin-bottom: 1rem;
+      padding-left: 1.25rem;
+      list-style-type: decimal;
+    }
+
+    .markdown li {
+      margin-bottom: 0.5rem;
+    }
+
+    .markdown code {
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+      font-size: 0.875rem;
+      background-color: #f1f1f1;
+      padding: 0.2rem 0.4rem;
+      border-radius: 0.25rem;
+    }
+  </style>
+
+</body>
+
+</html>

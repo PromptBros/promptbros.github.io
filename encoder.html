@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>URL Encoder</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+  <div class="container mx-auto py-10 px-4">
+    <h1 class="text-3xl font-bold mb-6">URL Encoder</h1>
+    <form id="encoder-form" class="bg-white p-6 rounded shadow mb-4">
+      <div class="mb-4">
+        <label for="url-input" class="block mb-2">URL:</label>
+        <input type="text" id="url-input" class="w-full p-2 border rounded" required>
+      </div>
+      <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Encode</button>
+    </form>
+    <div id="result" class="bg-white p-6 rounded shadow">
+      <h2 class="text-xl font-semibold mb-4">Encoded URL:</h2>
+      <div class="flex items-center">
+        <input type="text" id="encoded-url" class="w-full p-2 border rounded mr-4" readonly>
+        <button id="copy-button" class="bg-green-600 text-white px-4 py-2 rounded">Copy</button>
+      </div>
+    </div>
+  </div>
+  <script src="encode.js"></script>
+</body>
+</html>

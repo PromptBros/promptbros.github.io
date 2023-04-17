@@ -1,0 +1,21 @@
+[
+    {
+      "name": "prompt1.txt",
+      "content": {
+        "title": "Prompt 1",
+        "description": "This is the first ChatGPT prompt.",
+        "category": "Business",
+        "tags": ["business", "communication"]
+      }
+    },
+    {
+      "name": "prompt2.txt",
+      "content": {
+        "title": "Prompt 2",
+        "description": "This is the second ChatGPT prompt.",
+        "category": "Technology",
+        "tags": ["technology", "innovation"]
+      }
+    }
+  ]
+  
