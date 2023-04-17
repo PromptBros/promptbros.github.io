@@ -1,11 +1,11 @@
 const BASE_URL = "https://promptbros.github.io/CDN";
 const SEED = "PromtBros 2023";
-const encodedUrlParam = getQueryParam("col-id");
+const encodedUrlParam = getQueryParam(decodeURIComponent("col-id"));
 
 const decodedStr = xorDecode(encodedUrlParam, SEED);
 const baseJson = BASE_URL + decodedStr;
 let baseUrl = trimFilenameFromUrl(baseJson);
-
+console.log(encodedUrlParam, decodedStr, baseJson, baseUrl);
 function getQueryParam(param) {
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
@@ -14,20 +14,22 @@ function getQueryParam(param) {
 
 function xorDecode(encodedStr, seed) {
   if (!encodedStr) {
-    console.error("Not a Valid string")
-    return
+    console.error("Not a valid string");
+    return;
   }
 
   const firstChar = encodedStr[0];
   const lastChar = encodedStr[encodedStr.length - 1];
 
-  if (!(firstChar === 'f' && lastChar === 'O')) {
-    console.warn("Not a Valid Prompt ID")
+  if (!(firstChar === 'f')) {
+    console.warn("Not a Valid Collection ID", firstChar, lastChar)
     return
   }
 
   try {
-    const str = atob(encodedStr);
+    //const decodedUrlComponent = decodeURIComponent(encodedStr);
+    const base64 = encodedStr.replace(/-/g, '+').replace(/_/g, '/');
+    const str = atob(base64);
     let result = "";
 
     for (let i = 0; i < str.length; i++) {
@@ -36,10 +38,11 @@ function xorDecode(encodedStr, seed) {
 
     return result;
   } catch (error) {
-    console.error("Not a valid prompt Id", error);
+    console.error("Not a valid collection", error);
     return;
   }
 }
+
 
 function trimFilenameFromUrl(url) {
   const urlObj = new URL(url);
@@ -91,7 +94,7 @@ function displayGroups(groups) {
 
     for (const prompt of group.prompts) {
       const promptCard = document.createElement("a");
-      promptCard.href = prompt.path;
+      promptCard.href = "/prompt/?prompt-id=" + prompt.id ;
       promptCard.classList.add("relative", "h-80", "w-full", "overflow-hidden", "rounded-lg", "bg-white", "group-hover:opacity-75", "shadow-md");
       promptList.appendChild(promptCard);
 
@@ -127,7 +130,7 @@ async function fetchAndDisplayJSON(jsonUrl) {
 }
 
 document.getElementById("url-input").addEventListener("input", async (event) => {
-  const encodedUrl = event.target.value;
+  const encodedUrl = decodeURIComponent(event.target.value);
   const url = xorDecode(encodedUrl, SEED);
 
   if (!url) {

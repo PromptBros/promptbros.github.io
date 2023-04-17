@@ -1,11 +1,11 @@
 const BASE_URL = "https://promptbros.github.io/CDN";
 const SEED = "PromtBros 2023";
-const encodedUrlParam = getQueryParam("prompt-id");
+const encodedUrlParam = getQueryParam(decodeURIComponent("prompt-id"));
 
 const decodedStr = xorDecode(encodedUrlParam, SEED);
 const baseJson = BASE_URL + decodedStr;
 let baseUrl = trimFilenameFromUrl(baseJson);
-console.log("dec:", decodedStr)
+
 function getQueryParam(param) {
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
@@ -13,15 +13,23 @@ function getQueryParam(param) {
 }
 
 function xorDecode(encodedStr, seed) {
+  if (!encodedStr) {
+    console.error("Not a valid string");
+    return;
+  }
+
   const firstChar = encodedStr[0];
   const lastChar = encodedStr[encodedStr.length - 1];
 
   if (!(firstChar === 'f' && lastChar === '=')) {
+    console.warn("Not a Valid Prompt ID", firstChar, lastChar)
     return
   }
 
   try {
-    const str = atob(encodedStr);
+    //const decodedUrlComponent = decodeURIComponent(encodedStr);
+    const base64 = encodedStr.replace(/-/g, '+').replace(/_/g, '/');
+    const str = atob(base64);
     let result = "";
 
     for (let i = 0; i < str.length; i++) {
@@ -47,7 +55,7 @@ function trimFilenameFromUrl(url) {
 }
 
 async function fetchAndDisplayTextFile(filename, fileItem) {
-  console.log(baseUrl, filename);
+  
   try {
     const response = await fetch(baseUrl + filename);
     const text = await response.text();
@@ -151,7 +159,7 @@ async function fetchAndDisplayJSON(jsonUrl) {
 }
 
 document.getElementById("url-input").addEventListener("input", async (event) => {
-  const encodedUrl = event.target.value;
+  const encodedUrl = decodeURIComponent(event.target.value);
   const url = xorDecode(encodedUrl, SEED);
 
   if (!url) {
@@ -170,5 +178,3 @@ document.getElementById("url-input").addEventListener("input", async (event) => 
 if (decodedStr) {
   fetchAndDisplayJSON(baseJson);
 }
-
-

@@ -1,0 +1,22 @@
+{
+  "name": "promptbros.github.io",
+  "version": "1.0.0",
+  "description": "PromptBros distribution webpage",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PromptBros/promptbros.github.io.git"
+  },
+  "author": "PromptBros",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/PromptBros/promptbros.github.io/issues"
+  },
+  "homepage": "https://github.com/PromptBros/promptbros.github.io#readme",
+  "devDependencies": {
+    "tailwindcss": "^3.3.1"
+  }
+}

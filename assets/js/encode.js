@@ -26,9 +26,15 @@
   
   function xorEncode(str, seed) {
     let result = "";
+  
     for (let i = 0; i < str.length; i++) {
       result += String.fromCharCode(str.charCodeAt(i) ^ seed.charCodeAt(i % seed.length));
     }
-    return btoa(result);
+  
+    const base64 = btoa(result);
+    const urlSafeBase64 = base64.replace(/\+/g, '-').replace(/\//g, '_');
+  
+    return encodeURIComponent(urlSafeBase64);
   }
+  
   
