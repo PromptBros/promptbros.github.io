@@ -57,6 +57,7 @@ function trimFilenameFromUrl(url) {
 
 function displayGroups(groups) {
   const groupList = document.getElementById("group-list");
+  groupList.innerHTML = "";
 
   for (const group of groups) {
     const groupContainer = document.createElement("div");
@@ -77,40 +78,54 @@ function displayGroups(groups) {
       logoImage.classList.add("w-full", "h-full");
       logoContainer.appendChild(logoImage);
     }
+    const groupTitle = document.createElement("a");
+    groupTitle.href = "/collection/?col-id=" + group.id;
+    groupTitle.classList.add("text-2xl", "font-semibold", "mb-2", "group-hover:opacity-75");
+    groupHeaderContainer.appendChild(groupTitle);
 
     const title = document.createElement("h2");
     title.classList.add("text-2xl", "font-semibold", "mb-2");
     title.textContent = group.content.title;
-    groupHeaderContainer.appendChild(title);
+    groupTitle.appendChild(title);
 
     const description = document.createElement("p");
     description.classList.add("text-sm", "mb-4");
     description.textContent = group.content.description;
     groupHeaderContainer.appendChild(description);
 
+    const tags = document.createElement("ul");
+    tags.classList.add("list-none", "flex", "flex-wrap", "mb-3");
+    group.content.tags.forEach((tag) => {
+      const tagItem = document.createElement("li");
+      tagItem.classList.add("text-xs", "bg-slate-300", "text-white", "rounded-full", "px-2", "py-1", "mr-2", "mb-1");
+      tagItem.textContent = tag;
+      tags.appendChild(tagItem);
+    });
+    groupHeaderContainer.appendChild(tags);
+
     const promptList = document.createElement("div");
-    promptList.classList.add("grid", "grid-cols-1", "md:grid-cols-3", "lg:grid-cols-4", "gap-3");
+    promptList.classList.add("grid", "grid-cols-1", "md:grid-cols-4", "lg:grid-cols-6", "gap-3");
     groupContainer.appendChild(promptList);
 
     for (const prompt of group.prompts) {
       const promptCard = document.createElement("a");
-      promptCard.href = "/prompt/?prompt-id=" + prompt.id ;
-      promptCard.classList.add("relative", "h-80", "w-full", "overflow-hidden", "rounded-lg", "bg-white", "group-hover:opacity-75", "shadow-md");
+      promptCard.href = "/prompt/?prompt-id=" + prompt.id;
+      promptCard.classList.add("relative", "h-64", "w-full", "overflow-hidden", "rounded-lg", "bg-white", "hover:opacity-75", "hover:shadow-lg", "shadow-md");
       promptList.appendChild(promptCard);
 
       if (prompt.images.length > 0) {
         const imageContainer = document.createElement("div");
-        imageContainer.classList.add("w-full", "h-32", "overflow-hidden", "rounded");
+        imageContainer.classList.add("w-full", "h-46", "overflow-hidden", "rounded");
         promptCard.appendChild(imageContainer);
 
         const promptImage = document.createElement("img");
         promptImage.src = prompt.images[0];
-        promptImage.classList.add("w-full", "h-full", "object-cover");
+        promptImage.classList.add("w-full", "contain", "object-center");
         imageContainer.appendChild(promptImage);
       }
 
-      const promptText = document.createElement("h3");
-      promptText.classList.add("text-lg", "font-semibold", "mb-2");
+      const promptText = document.createElement("h4");
+      promptText.classList.add("text-md", "font-semibold", "mb-4", "px-3", "py-2");
       promptText.textContent = prompt.text;
       promptCard.appendChild(promptText);
     }

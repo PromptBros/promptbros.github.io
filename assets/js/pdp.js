@@ -110,16 +110,6 @@ async function displayFiles(files) {
     title.textContent = file.content.title;
     contentContainer.appendChild(title);
 
-    const tags = document.createElement("ul");
-    tags.classList.add("list-none", "flex", "flex-wrap", "mb-3");
-    file.content.tags.forEach((tag) => {
-      const tagItem = document.createElement("li");
-      tagItem.classList.add("text-xs", "bg-slate-400", "text-white", "rounded-full", "px-2", "py-1", "mr-2", "mb-2");
-      tagItem.textContent = tag;
-      tags.appendChild(tagItem);
-    });
-    contentContainer.appendChild(tags);
-
     const description = document.createElement("p");
     description.classList.add("text-sm", "mb-3");
     description.textContent = file.content.description;
