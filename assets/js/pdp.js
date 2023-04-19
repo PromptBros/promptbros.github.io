@@ -63,7 +63,7 @@ async function fetchAndDisplayTextFile(filename, fileItem) {
     const textareaContainer = document.createElement("div");
     textareaContainer.classList.add("flex");
     textareaContainer.innerHTML = `
-      <textarea class="w-full h-64 p-2 border mb-3" readonly>${text}</textarea>
+      <textarea class="w-full h-80 p-2 border mb-3 bg-gray-800 text-white" readonly>${text}</textarea>
       <div class="ml-2 flex items-start">
         <button class="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-500" data-clipboard-text="${text}">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
@@ -84,7 +84,7 @@ async function fetchAndDisplayMarkdownFile(fileName, fileItem) {
     const markdown = await response.text();
     const html = marked.parse(markdown);
     const instructionsContainer = document.createElement("div");
-    instructionsContainer.classList.add("markdown", "mt-3");
+    instructionsContainer.classList.add("markdown", "mt-3", "bg-slate-100", "p-4", "rounded", "shadow", "border");
     instructionsContainer.innerHTML = html;
     fileItem.appendChild(instructionsContainer);
   } catch (error) {
@@ -102,7 +102,7 @@ async function displayFiles(files) {
     fileList.appendChild(fileItem);
 
     const contentContainer = document.createElement("div");
-    contentContainer.classList.add("bg-neutral-100", "p-4", "rounded", "shadow", "border", "mb-6");
+    contentContainer.classList.add("p-4", "mb-6");
     fileItem.appendChild(contentContainer);
 
     const title = document.createElement("h3");
@@ -116,15 +116,27 @@ async function displayFiles(files) {
     contentContainer.appendChild(description);
 
     await fetchAndDisplayTextFile(file.fileName, contentContainer);
+    const tags = document.createElement("ul");
+    tags.classList.add("list-none", "flex", "flex-wrap", "mb-3", "mx-auto", "mt-10", "grid", "max-w-lg", "grid-cols-6", "items-center", "gap-x-4", "gap-y-4", "sm:max-w-xl", "sm:grid-cols-6", "sm:gap-x-10", "lg:mx-0", "lg:max-w-none", "lg:grid-cols-5"
+    );
+    file.content.tags.forEach((tag) => {
+      const tagItem = document.createElement("li");
+      tagItem.classList.add("text-xs", "col-span-2", "max-h-12", "w-full", "object-contain", "lg:col-span-1"
+      );
+      tagItem.textContent = tag;
+      tags.appendChild(tagItem);
+    });
+    contentContainer.appendChild(tags);
+    
     if (file.content.images) {
       const galleryContainer = document.createElement("div");
-      galleryContainer.classList.add("grid", "grid-cols-3", "gap-4", "mb-6");
-      fileItem.appendChild(galleryContainer);
+      galleryContainer.classList.add("grid", "grid-cols-4", "gap-4", "mb-6");
+      contentContainer.appendChild(galleryContainer);
 
       for (const image of file.content.images) {
         const imgElement = document.createElement("img");
-        imgElement.src = baseUrl + image;
-        imgElement.classList.add("w-full", "h-auto", "rounded");
+        imgElement.src = baseUrl + "images/" +image;
+        imgElement.classList.add("w-full", "h-auto", "rounded", "align-middle", "border", "shadow");
         galleryContainer.appendChild(imgElement);
       }
     }

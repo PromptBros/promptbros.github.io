@@ -115,7 +115,7 @@ function displayGroups(groups) {
 
       if (prompt.images.length > 0) {
         const imageContainer = document.createElement("div");
-        imageContainer.classList.add("w-full", "h-46", "overflow-hidden", "rounded");
+        imageContainer.classList.add("w-full", "h-48", "overflow-hidden", "rounded", "align-middle", "flex", "justify-center", "items-center");
         promptCard.appendChild(imageContainer);
 
         const promptImage = document.createElement("img");
