@@ -55,7 +55,7 @@ function trimFilenameFromUrl(url) {
 }
 
 async function fetchAndDisplayTextFile(filename, fileItem) {
-  
+
   try {
     const response = await fetch(baseUrl + filename);
     const text = await response.text();
@@ -78,15 +78,15 @@ async function fetchAndDisplayTextFile(filename, fileItem) {
   }
 }
 
-async function fetchAndDisplayMarkdownFile(fileName, fileItem) {
+async function fetchAndDisplayMarkdownFile(fileName, contentContainer) {
   try {
     const response = await fetch(baseUrl + fileName);
     const markdown = await response.text();
     const html = marked.parse(markdown);
     const instructionsContainer = document.createElement("div");
-    instructionsContainer.classList.add("markdown", "mt-3", "bg-slate-100", "p-4", "rounded", "shadow", "border");
+    instructionsContainer.classList.add("markdown-body", "mt-3", "bg-slate-100", "pt-6", "pb-6", "pl-10", "pr-10", "rounded");
     instructionsContainer.innerHTML = html;
-    fileItem.appendChild(instructionsContainer);
+    contentContainer.appendChild(instructionsContainer);
   } catch (error) {
     console.error("Error fetching Markdown file:", error);
   }
@@ -101,41 +101,63 @@ async function displayFiles(files) {
     fileItem.classList.add("mb-6");
     fileList.appendChild(fileItem);
 
-    const contentContainer = document.createElement("div");
-    contentContainer.classList.add("p-4", "mb-6");
-    fileItem.appendChild(contentContainer);
+    const itemHeaderContainer = document.createElement("div");
+    itemHeaderContainer.classList.add("p-2");
+    fileItem.appendChild(itemHeaderContainer);
+
+    if (file.brand) {
+      const logoContainer = document.createElement("div");
+      logoContainer.classList.add("w-14", "h-14", "overflow-hidden", "flex", "float-left", "mr-4");
+      itemHeaderContainer.appendChild(logoContainer);
+
+      const logoImage = document.createElement("img");
+      logoImage.src = file.brand;
+      logoImage.classList.add("w-full", "h-full");
+      logoContainer.appendChild(logoImage);
+    }
 
     const title = document.createElement("h3");
     title.classList.add("text-xl", "font-semibold", "mb-3");
     title.textContent = file.content.title;
-    contentContainer.appendChild(title);
+    itemHeaderContainer.appendChild(title);
+
+    if (file.model) {
+      const modelText = document.createElement("p");
+      modelText.textContent = file.model;
+      modelText.classList.add("text-xs");
+      itemHeaderContainer.appendChild(modelText);
+    }
+
+    const contentContainer = document.createElement("div");
+    contentContainer.classList.add("p-6", "mb-6");
+    fileItem.appendChild(contentContainer);
 
     const description = document.createElement("p");
-    description.classList.add("text-sm", "mb-3");
+    description.classList.add("mb-6", "mt-3");
     description.textContent = file.content.description;
     contentContainer.appendChild(description);
 
     await fetchAndDisplayTextFile(file.fileName, contentContainer);
+
     const tags = document.createElement("ul");
-    tags.classList.add("list-none", "flex", "flex-wrap", "mb-3", "mx-auto", "mt-10", "grid", "max-w-lg", "grid-cols-6", "items-center", "gap-x-4", "gap-y-4", "sm:max-w-xl", "sm:grid-cols-6", "sm:gap-x-10", "lg:mx-0", "lg:max-w-none", "lg:grid-cols-5"
+    tags.classList.add("list-none", "flex", "flex-wrap", "mt-3", "mx-auto", "mb-10", "grid", "max-w-lg", "grid-cols-8", "items-center", "gap-x-4", "gap-y-4", "sm:max-w-xl", "sm:grid-cols-6", "sm:gap-x-10", "lg:mx-0", "lg:max-w-none", "lg:grid-cols-6"
     );
     file.content.tags.forEach((tag) => {
       const tagItem = document.createElement("li");
-      tagItem.classList.add("text-xs", "col-span-2", "max-h-12", "w-full", "object-contain", "lg:col-span-1"
-      );
+      tagItem.classList.add("text-xs", "col-span-2", "max-h-12", "w-full", "object-contain", "lg:col-span-1", "font-bold", "text-center");
       tagItem.textContent = tag;
       tags.appendChild(tagItem);
     });
     contentContainer.appendChild(tags);
-    
-    if (file.content.images) {
+
+    if (file.content.images.length > 0) {
       const galleryContainer = document.createElement("div");
       galleryContainer.classList.add("grid", "grid-cols-4", "gap-4", "mb-6");
       contentContainer.appendChild(galleryContainer);
 
       for (const image of file.content.images) {
         const imgElement = document.createElement("img");
-        imgElement.src = baseUrl + "images/" +image;
+        imgElement.src = baseUrl + "images/" + image;
         imgElement.classList.add("w-full", "h-auto", "rounded", "align-middle", "border", "shadow");
         galleryContainer.appendChild(imgElement);
       }
@@ -143,7 +165,7 @@ async function displayFiles(files) {
 
     if (file.fileName) {
       const instructionsFilename = file.fileName.replace(".txt", ".md");
-      await fetchAndDisplayMarkdownFile(instructionsFilename, fileItem);
+      await fetchAndDisplayMarkdownFile(instructionsFilename, contentContainer);
     }
   }
 

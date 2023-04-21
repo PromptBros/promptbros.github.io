@@ -5,7 +5,7 @@ const encodedUrlParam = getQueryParam(decodeURIComponent("col-id"));
 const decodedStr = xorDecode(encodedUrlParam, SEED);
 const baseJson = BASE_URL + decodedStr;
 let baseUrl = trimFilenameFromUrl(baseJson);
-console.log(encodedUrlParam, decodedStr, baseJson, baseUrl);
+
 function getQueryParam(param) {
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
